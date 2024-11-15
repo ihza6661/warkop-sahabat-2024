@@ -29,7 +29,6 @@ class KaryawanController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi inputan
         $validatedData = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username|regex:/^\S*$/u',
@@ -59,33 +58,26 @@ class KaryawanController extends Controller
             'foto_profil.max' => 'Ukuran foto profil tidak boleh lebih dari 2MB.',
         ]);
 
-        // Cek apakah file foto_profil ada dan simpan ke folder public/foto_profil
         if ($request->file('foto_profil')) {
-            $image = $request->file('foto_profil');
-            $imageName = time() . '_' . $image->getClientOriginalName();  // Nama file unik
-            $imagePath = $image->move(public_path('foto_profil'), $imageName);  // Pindahkan ke public/foto_profil
+            $imagePath = $request->file('foto_profil')->store('foto_profil', 'public');
         } else {
             $imagePath = null;
         }
 
-        // Jika validasi gagal, kembali ke halaman sebelumnya dengan error
         if ($validatedData->fails()) {
             return redirect()->back()->withErrors($validatedData)->withInput();
         }
 
-        // Menyimpan data user
         $user = new User();
         $user->nama = $request->nama;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->id_peran = $request->id_peran;
-        $user->foto_profil = 'foto_profil/' . $imageName; // Menyimpan path relatif
+        $user->foto_profil = $imagePath;
         $user->save();
 
-        // Redirect ke halaman index karyawan dengan pesan sukses
         return redirect()->route('karyawan.index')->with('success', 'Karyawan baru berhasil ditambahkan.');
     }
-
 
     public function edit($id)
     {
