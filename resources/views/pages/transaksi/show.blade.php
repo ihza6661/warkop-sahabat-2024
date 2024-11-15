@@ -156,7 +156,7 @@
                                             Pembayaran</label>
                                         <input type="text"
                                             class="form-control form-control-sm total_pembayaran @error('total_pembayaran') is-invalid @enderror"
-                                            id="harga" name="total_pembayaran"
+                                            id="harga_jual" name="total_pembayaran"
                                             value="{{ old('total_pembayaran', $transaksi->total_pembayaran ?? '') }}">
                                         @error('total_pembayaran')
                                             <div class="invalid-feedback">
@@ -220,7 +220,6 @@
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
                 myWindow.print();
-
             }
         }
     </script>

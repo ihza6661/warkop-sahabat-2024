@@ -20,13 +20,14 @@
             <div class="col d-flex flex-column align-items-center">
                 <img src="/images/logofood.png" class="mb-3" alt="" srcset="" width="60">
                 <h2>Warung Kopi Sahabat</h2>
-                <p class="mb-1">Alamat</p>
+                <p class="mb-1">Jl. Danau Sentarum No.5, Sungai Bangkong, Kec. Pontianak Kota, Kota Pontianak,
+                    Kalimantan Barat 78113</p>
             </div>
             <hr class="mt-3" style="border: 2px solid black;">
             <div class="col my-5">
                 <h3 class="text-center">Laporan Transaksi</h3>
                 <p class="mb-0 text-center">
-                    {{ isset($_GET['month']) && isset($_GET['year']) ? 'Transaksi pada bulan ' . strftime('%B', mktime(0, 0, 0, $_GET['month'], 1)) . ' ' . $_GET['year'] : (isset($_GET['month']) ? 'Transaksi pada bulan ' . strftime('%B', mktime(0, 0, 0, $_GET['month'], 1)) : (isset($_GET['year']) ? 'Transaksi pada tahun ' . $_GET['year'] : (isset($_GET['data']) && $_GET['data'] == 'all' ? 'Semua Transaksi' : (isset($_GET['data']) && $_GET['data'] == 'today' ? 'Transaksi hari ini' : (isset($_GET['data']) && $_GET['data'] == 'thisMonth' ? 'Transaksi pada tahun' : 'bau'))))) }}
+                    {{ isset($_GET['month']) && isset($_GET['year']) ? 'Transaksi pada bulan ' . strftime('%B', mktime(0, 0, 0, $_GET['month'], 1)) . ' ' . $_GET['year'] : (isset($_GET['month']) ? 'Transaksi pada bulan ' . strftime('%B', mktime(0, 0, 0, $_GET['month'], 1)) : (isset($_GET['year']) ? 'Transaksi pada tahun ' . $_GET['year'] : (isset($_GET['data']) && $_GET['data'] == 'all' ? 'Semua Transaksi' : (isset($_GET['data']) && $_GET['data'] == 'today' ? 'Transaksi hari ini' : (isset($_GET['data']) && $_GET['data'] == 'thisMonth' ? 'Transaksi bulan ini' : 'bau'))))) }}
                 </p>
             </div>
         </div>

@@ -106,11 +106,17 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::findOrFail($id);
         $validatedData = $request->validate([
-            'total_transaksi' => 'required|numeric',
-            'total_pembayaran' => 'required|string'
+            'total_transaksi' => 'required|numeric|min:0',
+            'total_pembayaran' => 'required|string|min:0'
         ]);
 
         $validatedData['total_pembayaran'] = (int) str_replace('.', '', $request->total_pembayaran);
+
+        // Cek jika total pembayaran kurang dari total transaksi
+        if ($validatedData['total_pembayaran'] < $transaksi->total_transaksi) {
+            return redirect()->back()->withErrors(['total_pembayaran' => 'Total pembayaran tidak boleh kurang dari total transaksi.']);
+        }
+
         $validatedData['status'] = true;
 
         // Update the transaction
