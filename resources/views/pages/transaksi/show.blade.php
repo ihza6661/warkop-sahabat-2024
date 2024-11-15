@@ -192,19 +192,21 @@
 
         function show_my_receipt1() {
             const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
-            const total_pembayaran = document.getElementById("harga");
+            const total_pembayaran = document.getElementById("harga_jual");
             if (!total_pembayaran.value) {
                 return false;
             } else {
                 localStorage.setItem('pembayaran', total_pembayaran.value);
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
+                myWindow.print();
+
             }
         }
 
         function show_my_receipt2() {
             const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
-            const totalPembayaranValue = document.getElementById("harga").value.replace(/\./g, '');
+            const totalPembayaranValue = document.getElementById("harga_jual").value.replace(/\./g, '');
             const totalTransaksiValue = parseInt(document.getElementById("total").value);
 
             if (!totalPembayaranValue) {
@@ -217,6 +219,8 @@
                 localStorage.setItem('pembayaran', totalPembayaranValue);
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
+                myWindow.print();
+
             }
         }
     </script>
