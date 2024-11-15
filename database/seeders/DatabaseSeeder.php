@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory()->create();
         Peran::factory(3)->create();
+        User::factory()->create();
 
         // Menu::create([
         //     'nama' => 'Kopi Tiam',
