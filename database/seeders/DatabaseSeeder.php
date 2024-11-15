@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory()->create();
-        // Peran::factory(3)->create();
+        Peran::factory(3)->create();
 
         // Menu::create([
         //     'nama' => 'Kopi Tiam',
@@ -37,13 +37,13 @@ class DatabaseSeeder extends Seeder
         //     'foto' => asset('nasi_goreng.jpeg'),
         // ]);
 
-        Menu::create([
-            'nama' => 'Tahu Crispy',
-            'id_kategori' => 6,
-            'harga_modal' => 10000,
-            'harga_jual' => 14000,
-            'deskripsi' => 'Ini tahu crispy',
-            'foto' => Storage::url('tahu_crispy.jpeg'),
-        ]);
+        // Menu::create([
+        //     'nama' => 'Tahu Crispy',
+        //     'id_kategori' => 6,
+        //     'harga_modal' => 10000,
+        //     'harga_jual' => 14000,
+        //     'deskripsi' => 'Ini tahu crispy',
+        //     'foto' => Storage::url('tahu_crispy.jpeg'),
+        // ]);
     }
 }

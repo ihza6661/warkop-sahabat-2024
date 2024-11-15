@@ -9,6 +9,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/portal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.2.1-web/css/all.css') }}">
 
     {{-- trix --}}
