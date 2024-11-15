@@ -150,3 +150,35 @@ document.querySelectorAll(".table-B").forEach((table) => {
             selectedTable.getAttribute("data-number");
     });
 });
+
+// Function to validate before submitting the order
+function validateOrder() {
+    // Check if a table is selected
+    if (!selectedTable) {
+        alert("Silakan pilih meja terlebih dahulu.");
+        return false;
+    }
+
+    // Check if the cart is empty
+    if (Object.keys(cart).length === 0) {
+        alert(
+            "Keranjang pesanan masih kosong. Silakan tambahkan item ke keranjang."
+        );
+        return false;
+    }
+
+    // If everything is valid, return true to allow form submission
+    return true;
+}
+
+// Event Listener for the submit button (Order button)
+document
+    .querySelector(".cart-order")
+    .addEventListener("click", function (event) {
+        // Validate before proceeding with the form submission
+        if (!validateOrder()) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+
+// Function for clearing the order (deleteOrder) already exists in your code

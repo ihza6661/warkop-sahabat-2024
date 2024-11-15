@@ -19,7 +19,8 @@
         <div class="card-body mx-4">
             <div class="container">
                 <p class="my-5 mb-0 text-center" style="font-size: 30px;">Warung Kopi Sahabat</p>
-                <p class="mt-0 mb-1 text-center" style="font-size: 15px;">Alamat</p>
+                <p class="mt-0 mb-1 text-center" style="font-size: 15px;">Jl. Danau Sentarum No.5, Sungai Bangkong, Kec.
+                    Pontianak Kota, Kota Pontianak, Kalimantan Barat 78113</p>
                 @foreach ($data as $key)
                     @php
                         $datetime = explode(' ', $key->created_at)[0];
@@ -32,7 +33,7 @@
                     <div class="row">
                         <ul class="list-unstyled">
                             <li class="text-black">Kasir &nbsp : &nbsp{{ $key->user->nama }}</li>
-                            <span class="text-black">No. Meja: {{ $key->meja->nama }}</span> 
+                            <span class="text-black">No. Meja: {{ $key->meja->nama }}</span>
                             <li class="text-black mt-1">Tanggal &nbsp : &nbsp {{ $date->toFormattedDateString() }}
                                 {{ $time[4] . ' ' . $time[5] }}</li>
                         </ul>
