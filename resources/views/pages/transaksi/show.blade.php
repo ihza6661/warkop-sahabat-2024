@@ -116,8 +116,7 @@
                                     class="card-body">
                                     @csrf
                                     @method('put')
-                                    <input type="hidden" name="id" id="id_transaksi"
-                                        value="{{ $transaksi->id }}">
+                                    <input type="hidden" name="id" id="id_transaksi" value="{{ $transaksi->id }}">
                                     <div class="form-group mb-3">
                                         <label for="name_cashier" class="small text-muted fw-semibold mb-1">Nama
                                             Kasir</label>
@@ -180,50 +179,73 @@
         const totalTransaksi = parseInt(document.getElementById('total').value);
         const kembalianInput = document.getElementById('kembalian');
 
-        total_pembayaranFormat.addEventListener('keyup', function() {
+        total_pembayaranFormat.addEventListener('focus', function() {
+            this.value = ''; // Kosongkan input saat difokuskan
+            hiddenTotalPembayaran.value = ''; // Kosongkan hidden input
+            kembalianInput.value = '0'; // Reset kembalian
+        });
+
+        total_pembayaranFormat.addEventListener('input', function() {
             const unformattedValue = this.value.replace(/\./g, '');
             const totalPembayaran = parseInt(unformattedValue) || 0;
 
+            // Format ulang angka yang dimasukkan
             this.value = new Intl.NumberFormat('id-ID').format(unformattedValue);
+
+            // Perbarui nilai input hidden
             hiddenTotalPembayaran.value = unformattedValue;
 
+            // Hitung kembalian
             const kembalian = totalPembayaran - totalTransaksi;
-
             kembalianInput.value = kembalian >= 0 ?
                 new Intl.NumberFormat('id-ID').format(kembalian) :
                 '0';
         });
 
-        function show_my_receipt1() {
-            const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
-            const total_pembayaran = document.getElementById("harga_jual").value;
-            const kembalian = document.getElementById("kembalian").value;
 
-            if (!total_pembayaran) {
+        function show_my_receipt1() {
+            const idTransaksi = document.getElementById('id_transaksi').value;
+            const totalPembayaranInput = document.getElementById("harga_jual");
+
+            if (!totalPembayaranInput.value) {
+                alert("Total pembayaran tidak boleh kosong.");
                 return false;
             } else {
+                // Simpan total pembayaran ke localStorage
+                localStorage.setItem('total_pembayaran', totalPembayaranInput.value);
+
+                // Buka halaman nota
+                const page = '/transaksi/nota/' + idTransaksi;
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
-                myWindow.print();
             }
         }
 
         function show_my_receipt2() {
-            const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
-            const totalPembayaranValue = document.getElementById("harga_jual").value.replace(/\./g, '');
-            const totalTransaksiValue = parseInt(document.getElementById("total").value);
-            const kembalian = document.getElementById("kembalian").value;
+            const idTransaksi = document.getElementById('id_transaksi').value;
+            const totalPembayaranInput = document.getElementById("harga_jual");
+            const totalTransaksiInput = document.getElementById("total");
+            const totalPembayaran = parseInt(totalPembayaranInput.value.replace(/\./g, ''));
+            const totalTransaksi = parseInt(totalTransaksiInput.value);
 
-            if (!totalPembayaranValue) {
+            if (!totalPembayaranInput.value) {
                 alert("Total pembayaran tidak boleh kosong.");
                 return false;
-            } else if (parseInt(totalPembayaranValue) < totalTransaksiValue) {
+            } else if (totalPembayaran < totalTransaksi) {
                 alert("Total pembayaran tidak boleh kurang dari total transaksi!");
                 return false;
             } else {
+                // Hitung kembalian
+                const kembalian = totalPembayaran - totalTransaksi;
+
+                // Simpan total pembayaran dan kembalian ke localStorage
+                localStorage.setItem('total_pembayaran', totalPembayaranInput.value);
+                localStorage.setItem('kembalian', new Intl.NumberFormat('id-ID').format(kembalian));
+
+                // Buka halaman nota
+                const page = '/transaksi/nota/' + idTransaksi;
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
-                myWindow.print();
             }
         }
     </script>

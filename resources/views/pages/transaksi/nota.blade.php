@@ -44,7 +44,8 @@
                                 <p class="small text-muted">{{ $item->jumlah }} x {{ $item->menu->harga_jual }}</p>
                             </div>
                             <div class="col-xl-2">
-                                <p class="float-end">{{ number_format($item->transaksi->total_transaksi, 0, ',', '.') }}</p>
+                                <p class="float-end">
+                                    {{ number_format($item->transaksi->total_transaksi, 0, ',', '.') }}</p>
                             </div>
                             <hr>
                         @endforeach
@@ -70,12 +71,14 @@
                         </div>
                         <hr style="border: 2px solid black;">
                         <div class="col-xl-12">
-                            <p class="float-end fw-bold total-payment">Total Pembayaran &nbsp: &nbsp {{ number_format($key->total_pembayaran, 0, ',', '.') }}
+                            <p class="float-end fw-bold total-payment" id="total_pembayaran">Total Pembayaran &nbsp:
+                                &nbsp {{ number_format($key->total_pembayaran, 0, ',', '.') }}
                                 <span class="change"></span>
                             </p>
                         </div>
                         <div class="col-xl-12">
-                            <p class="float-end fw-bold">Kembalian &nbsp: &nbsp {{ number_format($key->total_kembalian, 0, ',', '.') }}
+                            <p class="float-end fw-bold" id="kembalian">Kembalian &nbsp: &nbsp
+                                {{ number_format($key->total_kembalian, 0, ',', '.') }}
                                 <span class="change"></span>
                             </p>
                         </div>
@@ -93,10 +96,23 @@
     </div>
     <script>
         window.onload = function() {
-            let totalPayment = document.querySelector('.total-payment'); // Elemen Total Pembayaran
-            let changeElement = document.querySelector('.change'); // Elemen Kembalian
+            // Ambil data dari localStorage
+            const totalPembayaran = localStorage.getItem('total_pembayaran');
+            const kembalian = localStorage.getItem('kembalian');
 
-            // Cetak halaman
+            // Masukkan data ke elemen HTML
+            if (totalPembayaran) {
+                document.getElementById('total_pembayaran').textContent = "Total Pembayaran: " + totalPembayaran;
+            }
+            if (kembalian) {
+                document.getElementById('kembalian').textContent = "Total Kembalian: " + kembalian;
+            }
+
+            // Hapus data dari localStorage setelah digunakan (opsional)
+            localStorage.removeItem('total_pembayaran');
+            localStorage.removeItem('kembalian');
+
+            // Cetak halaman setelah data terisi
             window.print();
         };
     </script>
