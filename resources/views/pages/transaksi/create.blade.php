@@ -1,5 +1,7 @@
 @extends('components.order')
-
+@section('title')
+    - Buat Pesanan Baru
+@endsection
 @section('container')
     <div class="col-md-8 p-0 h-100 flex flex-column justify-content-between">
         <div class="hd-menu d-flex align-items-center justify-content-between shadow bg-white">
@@ -84,11 +86,6 @@
                     <div class="subtotal d-flex justify-content-between align-items-center mt-3 p-2" style="height: 40px;">
                         <h6 class="text-white">Subtotal</h6>
                         <h6 class="sub-total text-white">Rp 0</h6>
-                    </div>
-                    <div class="ppn d-flex justify-content-between align-items-center p-2" style="height: 40px;">
-                        <h6 class="text-white">Ppn</h6>
-                        <h6 class="text-white">10%</h6>
-                        <input type="hidden" name="ppn" value="10%">
                     </div>
                     <hr class="mt-3 text-white">
                     <div class="section-transaction d-flex justify-content-between align-items-center p-2">

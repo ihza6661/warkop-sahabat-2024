@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_meja');
             $table->integer('total_transaksi');
             $table->integer('total_pembayaran');
+            $table->integer('total_kembalian');
             $table->boolean('status')->default(false);
             $table->timestamps();
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

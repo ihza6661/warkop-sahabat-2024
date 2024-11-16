@@ -1,5 +1,7 @@
 @extends('components.main')
-
+@section('title')
+    - Tambah Meja Baru
+@endsection
 @section('container')
     <h1 class="app-page-title mb-4">Tambah Meja Baru</h1>
     <div class="col-12 col-md-8">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -76,6 +77,13 @@ class KaryawanController extends Controller
         $user->foto_profil = $imagePath;
         $user->save();
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menambah karyawan baru'
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('karyawan.index')->with('success', 'Karyawan baru berhasil ditambahkan.');
     }
 
@@ -120,6 +128,13 @@ class KaryawanController extends Controller
 
         $user->save();
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui data karyawan ' . $request->nama
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
@@ -141,6 +156,13 @@ class KaryawanController extends Controller
         $userIdsToDelete = array_filter($request->input('users'), function ($userId) use ($loggedInUserId) {
             return $userId != $loggedInUserId;
         });
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menghapus karyawan'
+        ];
+        ActivityLog::create($activity);
 
         if (!empty($userIdsToDelete)) {
             User::whereIn('id', $userIdsToDelete)->delete();

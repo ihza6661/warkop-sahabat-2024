@@ -33,4 +33,13 @@ class Transaksi extends Model
             $query->whereMonth('created_at', $filters['month']);
         }
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->total_kembalian =  $model->total_pembayaran - $model->total_transaksi;
+        });
+    }
 }

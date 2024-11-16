@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Meja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class MejaController extends Controller
@@ -38,6 +40,13 @@ class MejaController extends Controller
         $meja->nama = $request->nama;
         $meja->save();
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menambah meja baru'
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('meja.index')->with('success', 'Meja baru berhasil ditambahkan.');
     }
 
@@ -65,8 +74,14 @@ class MejaController extends Controller
         }
 
         $meja->nama = $request->nama;
-
         $meja->save();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui data meja ' . $request->nama
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('meja.index')->with('success', 'Data meja berhasil diperbarui.');
     }
@@ -86,6 +101,13 @@ class MejaController extends Controller
 
         $mejaIdsToDelete = $request->input('mejas');
         Meja::whereIn('id', $mejaIdsToDelete)->delete();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menghapus meja'
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('meja.index')->with('success', 'Meja terpilih berhasil dihapus.');
     }

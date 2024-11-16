@@ -1,14 +1,17 @@
 @extends('components.main')
-
+@section('title')
+    - Kelola Transaksi
+@endsection
 @section('container')
     <div class="col-auto">
-        <h1 class="app-page-title mb-0">Transaction</h1>
+        <h1 class="app-page-title mb-0">Transaksi</h1>
     </div>
     <div class="col-10">
         <div class="page-utilities">
             <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
                 <div class="col-auto">
-                    <form action="{{ route('transaksi.index') }}" method="GET" class="table-search-form row gx-1 align-items-center">
+                    <form action="{{ route('transaksi.index') }}" method="GET"
+                        class="table-search-form row gx-1 align-items-center">
                         <div class="col-auto">
                             <select class="form-select w-auto" name="year">
                                 @if (!request('year'))

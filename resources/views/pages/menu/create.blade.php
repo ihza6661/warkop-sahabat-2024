@@ -1,5 +1,7 @@
 @extends('components.main')
-
+@section('title')
+    - Tambah Menu Baru
+@endsection
 @section('container')
     <h1 class="app-page-title mb-4">Tambah Menu Baru</h1>
     <div class="col-lg-8">
@@ -7,8 +9,8 @@
             @csrf
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>
-                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
-                    name="nama" required>
+                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama"
+                    required>
                 @error('nama')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -17,7 +19,7 @@
             </div>
             <div class="mb-3">
                 <label for="harga_modal" class="form-label">Harga Modal</label>
-                <input type="number" class="form-control @error('harga_modal') is-invalid @enderror" id="harga_modal"
+                <input type="text" class="form-control @error('harga_modal') is-invalid @enderror" id="harga_modal"
                     name="harga_modal" required>
                 @error('harga_modal')
                     <div class="invalid-feedback">
@@ -27,7 +29,7 @@
             </div>
             <div class="mb-3">
                 <label for="harga_jual" class="form-label">Harga Jual</label>
-                <input type="number" class="form-control @error('harga_jual') is-invalid @enderror" id="harga_jual"
+                <input type="text" class="form-control @error('harga_jual') is-invalid @enderror" id="harga_jual"
                     name="harga_jual" required>
                 @error('harga_jual')
                     <div class="invalid-feedback">
@@ -95,5 +97,5 @@
             });
         })
     </script>
-    <script src="/js/formatmoney.js"></script>
+    <script src="{{ asset('assets/js/formatmoney.js') }}"></script>
 @endsection

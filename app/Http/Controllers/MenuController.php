@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Kategori;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,12 +30,12 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
             'id_kategori' => 'required|exists:kategoris,id',
-            'harga_modal' => 'required|integer',
-            'harga_jual' => 'required|integer',
-            'deskripsi' => 'required|string',
+            'harga_modal' => 'required|string',
+            'harga_jual' => 'required|string',
+            'deskripsi' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
             'nama.required' => 'Nama wajib diisi.',
@@ -63,18 +65,31 @@ class MenuController extends Controller
             $imagePath = null;
         }
 
-        if ($validatedData->fails()) {
-            return redirect()->back()->withErrors($validatedData)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $validatedData = $validator->validated();
+
+        // Menghilangkan format uang (titik) dari `harga_modal` dan `harga_jual`
+        $validatedData['harga_modal'] = (int) str_replace('.', '', $request->harga_modal);
+        $validatedData['harga_jual'] = (int) str_replace('.', '', $request->harga_jual);
+
         $menu = new Menu();
-        $menu->nama = $request->nama;
-        $menu->id_kategori = $request->id_kategori;
-        $menu->harga_modal = $request->harga_modal;
-        $menu->harga_jual = $request->harga_jual;
-        $menu->deskripsi = $request->deskripsi;
+        $menu->nama = $validatedData['nama'];
+        $menu->id_kategori = $validatedData['id_kategori'];
+        $menu->harga_modal = $validatedData['harga_modal'];
+        $menu->harga_jual = $validatedData['harga_jual'];
+        $menu->deskripsi = $validatedData['deskripsi'];
         $menu->foto = $imagePath;
         $menu->save();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menambah menu baru ' . $request->nama
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('menu.index')->with('success', 'Menu baru berhasil ditambahkan.');
     }
@@ -112,7 +127,7 @@ class MenuController extends Controller
             'id_kategori' => 'required|exists:kategoris,id',
             'harga_modal' => 'required|string', // Perlu 'string' karena formatnya mengandung titik
             'harga_jual' => 'required|string', // Perlu 'string' karena formatnya mengandung titik
-            'deskripsi' => 'required|string',
+            'deskripsi' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
             'nama.required' => 'Nama wajib diisi.',
@@ -124,7 +139,6 @@ class MenuController extends Controller
             'harga_modal.string' => 'Harga modal harus berupa angka.',
             'harga_jual.required' => 'Harga jual wajib diisi.',
             'harga_jual.string' => 'Harga jual harus berupa angka.',
-            'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
             'foto.image' => 'Foto profil harus berupa gambar.',
             'foto.mimes' => 'Foto profil harus berformat: jpeg, png, jpg, gif, atau svg.',
@@ -157,6 +171,13 @@ class MenuController extends Controller
 
         $menu->save();
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui data menu ' . $request->nama
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('menu.index')->with('success', 'Data menu berhasil diperbarui.');
     }
 
@@ -164,6 +185,13 @@ class MenuController extends Controller
     {
         $menu = Menu::find($id);
         $menu->delete();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menghapus menu ' . $menu->nama
+        ];
+        ActivityLog::create($activity);
         return redirect()->route('menu.index')->with('success', 'Data menu berhasil dihapus.');
     }
 }

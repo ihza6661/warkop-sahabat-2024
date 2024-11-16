@@ -25,7 +25,8 @@
                 <div class="form-group mb-3">
                     <label><strong>Nama</strong></label>
                     <div class="input-group d-flex align-items-center" id="show_hide_password">
-                        <input class="form-control @error('nama') is-invalid @enderror" type="nama" name="nama" value="{{ old('nama', $user->nama) }}">
+                        <input class="form-control @error('nama') is-invalid @enderror" type="nama" name="nama"
+                            value="{{ old('nama', $user->nama) }}">
                         @error('nama')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -34,7 +35,8 @@
                 <div class="form-group mb-3">
                     <label><strong>Username</strong></label>
                     <div class="input-group d-flex align-items-center" id="show_hide_password">
-                        <input class="form-control @error('username') is-invalid @enderror" type="username" name="username" value="{{ old('username', $user->username) }}">
+                        <input class="form-control @error('username') is-invalid @enderror" type="username" name="username"
+                            value="{{ old('username', $user->username) }}">
                         @error('username')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

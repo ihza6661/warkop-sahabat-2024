@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/images/logofood.ico">
-    <title>Report</title>
+    <link rel="shortcut icon" href="{{ asset('assets/images/logofood.ico') }}">
+    <title>Warung Kopi Sahabat - Laporan</title>
 
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/portal.css') }}">
@@ -20,7 +20,8 @@
             <div class="col d-flex flex-column align-items-center">
                 <img src="/images/logofood.png" class="mb-3" alt="" srcset="" width="60">
                 <h2>Warung Kopi Sahabat</h2>
-                <p class="mb-1">Jl. Danau Sentarum No.5, Sungai Bangkong, Kec. Pontianak Kota, Kota Pontianak,
+                <p class="mb-1 text-center">Jl. Danau Sentarum No.5, Sungai Bangkong, Kec. Pontianak Kota, Kota
+                    Pontianak,
                     Kalimantan Barat 78113</p>
             </div>
             <hr class="mt-3" style="border: 2px solid black;">
@@ -37,7 +38,7 @@
                     <th scope="col">Tanggal Transaksi</th>
                     <th scope="col">Menu</th>
                     <th scope="col">No. Meja</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">Total Transaksi</th>
                     <th scope="col">Pembayaran</th>
                     <th scope="col">Profit</th>
                 </tr>
@@ -86,11 +87,11 @@
                     $total_transaksi = array_reduce($arr_transaction, 'myfunction');
                 @endphp
                 <tr>
-                    <th colspan="5" class="text-end">Total revenue</th>
+                    <th colspan="5" class="text-end">Total Transaksi</th>
                     <td>Rp. {{ number_format($total_transaksi, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <th colspan="5" class="text-end">Total profit</th>
+                    <th colspan="5" class="text-end">Total Profit</th>
                     <td>Rp. {{ number_format($total_profit, 0, ',', '.') }}</td>
                 </tr>
             </tfoot>

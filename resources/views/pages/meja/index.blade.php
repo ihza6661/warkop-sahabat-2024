@@ -1,5 +1,7 @@
 @extends('components.main')
-
+@section('title')
+    - Kelola Meja
+@endsection
 @section('container')
     <h1 class="app-page-title mb-2">Kelola Meja</h1>
     <section class="ftco-section">
@@ -26,8 +28,7 @@
                                                         name="mejas[]" value="{{ $meja->id }}">
                                                     <span class="checkmark"></span>
                                                 </label>
-                                                <a href="{{ route('meja.edit', $meja->id) }}"
-                                                    class="text-warning"><i
+                                                <a href="{{ route('meja.edit', $meja->id) }}" class="text-warning"><i
                                                         class="fa-regular fa-pen-to-square mb-1 ms-2"></i></a>
                                             </td>
                                             <td class="d-flex align-items-center">

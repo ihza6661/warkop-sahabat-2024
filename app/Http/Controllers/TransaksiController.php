@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\DetailTransaksi;
 use App\Models\Kategori;
 use App\Models\Meja;
@@ -51,7 +52,6 @@ class TransaksiController extends Controller
         $menus = Menu::with('kategori')->orderBy('created_at', 'desc')->get();
         $mejas = Meja::orderBy('created_at', 'asc')->get();
 
-
         return view("pages.transaksi.create", compact("kategoris", "menus", "mejas"));
     }
 
@@ -90,6 +90,13 @@ class TransaksiController extends Controller
             $detail->save();
         }
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'membuat transaksi baru'
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dibuat.');
     }
 
@@ -121,8 +128,17 @@ class TransaksiController extends Controller
 
         // Update the transaction
         $transaksi->update($validatedData);
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui transaksi'
+        ];
+        ActivityLog::create($activity);
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
+
 
     public function nota($id)
     {

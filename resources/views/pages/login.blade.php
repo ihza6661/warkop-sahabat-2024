@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Warung Kopi Sahabat - Masuk</title>
+    <link rel="shortcut icon" href="{{ asset('assets/images/logofood.ico') }}">
 
     <link id="theme-style" rel="stylesheet" href="{{ asset('assets/css/portal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/logofood.ico') }}">
 </head>
 
 <body class="app app-login p-0">
@@ -43,21 +43,9 @@
                                 <label class="sr-only" for="signin-password">Password</label>
                                 <input id="signin-password" name="password" type="password"
                                     class="form-control signin-password" placeholder="Password" required="required">
-                                <div class="extra mt-3 row justify-content-between">
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="RememberPassword">
-                                            <label class="form-check-label" for="RememberPassword">
-                                                Remember me
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">Log
-                                    In</button>
+                                <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">Masuk</button>
                             </div>
                         </form>
                     </div>

@@ -46,27 +46,6 @@
                                     <div class="col">
                                         <div class="row justify-content-between mb-2">
                                             <div class="col-4">
-                                                <p class="mb-1"><b>Subtotal</b></p>
-                                            </div>
-                                            <div class="flex-sm-col col-auto">
-                                                <p class="mb-1">
-                                                    <b>
-                                                        Rp.
-                                                        {{ number_format($transaksi->detailTransaksis->sum('harga'), 0, ',', '.') }}
-                                                    </b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-between mb-2">
-                                            <div class="col">
-                                                <p class="mb-1"><b>Ppn</b></p>
-                                            </div>
-                                            <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>10%</b></p>
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-between mb-2">
-                                            <div class="col-4">
                                                 <p><b>Total</b></p>
                                             </div>
                                             <div class="flex-sm-col col-auto">
@@ -118,6 +97,13 @@
                                             value="{{ number_format($transaksi->total_pembayaran, 0, ',', '.') }}"
                                             id="harga_jual" disabled>
                                     </div>
+                                    <div class="form-group mb-3 visually-hidden">
+                                        <label for="kembalian" class="small text-muted fw-semibold mb-1">Total
+                                            Kembalian</label>
+                                        <input type="text"
+                                            class="form-control form-control-sm kembalian @error('kembalian') is-invalid @enderror"
+                                            id="kembalian" name="kembalian" value="" disabled>
+                                    </div>
                                     <div class="row mb-md-5 mt-4">
                                         <div class="col">
                                             <a onclick="show_my_receipt1()"
@@ -130,7 +116,8 @@
                                     class="card-body">
                                     @csrf
                                     @method('put')
-                                    <input type="hidden" name="id" id="id_transaksi" value="{{ $transaksi->id }}">
+                                    <input type="hidden" name="id" id="id_transaksi"
+                                        value="{{ $transaksi->id }}">
                                     <div class="form-group mb-3">
                                         <label for="name_cashier" class="small text-muted fw-semibold mb-1">Nama
                                             Kasir</label>
@@ -164,6 +151,13 @@
                                             </div>
                                         @enderror
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="kembalian" class="small text-muted fw-semibold mb-1">Total
+                                            Kembalian</label>
+                                        <input type="text"
+                                            class="form-control form-control-sm kembalian @error('kembalian') is-invalid @enderror"
+                                            id="kembalian" name="kembalian" value="" disabled>
+                                    </div>
                                     <div class="row mb-md-5 mt-4">
                                         <div class="col">
                                             <button type="submit" onclick="show_my_receipt2()"
@@ -183,24 +177,34 @@
     <script>
         const total_pembayaranFormat = document.querySelector('.total_pembayaran');
         const hiddenTotalPembayaran = document.getElementById('harga_jual');
+        const totalTransaksi = parseInt(document.getElementById('total').value);
+        const kembalianInput = document.getElementById('kembalian');
 
         total_pembayaranFormat.addEventListener('keyup', function() {
             const unformattedValue = this.value.replace(/\./g, '');
+            const totalPembayaran = parseInt(unformattedValue) || 0;
+
             this.value = new Intl.NumberFormat('id-ID').format(unformattedValue);
             hiddenTotalPembayaran.value = unformattedValue;
+
+            const kembalian = totalPembayaran - totalTransaksi;
+
+            kembalianInput.value = kembalian >= 0 ?
+                new Intl.NumberFormat('id-ID').format(kembalian) :
+                '0';
         });
 
         function show_my_receipt1() {
             const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
-            const total_pembayaran = document.getElementById("harga_jual");
-            if (!total_pembayaran.value) {
+            const total_pembayaran = document.getElementById("harga_jual").value;
+            const kembalian = document.getElementById("kembalian").value;
+
+            if (!total_pembayaran) {
                 return false;
             } else {
-                localStorage.setItem('pembayaran', total_pembayaran.value);
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
                 myWindow.print();
-
             }
         }
 
@@ -208,6 +212,7 @@
             const page = '/transaksi/nota/' + document.getElementById('id_transaksi').value;
             const totalPembayaranValue = document.getElementById("harga_jual").value.replace(/\./g, '');
             const totalTransaksiValue = parseInt(document.getElementById("total").value);
+            const kembalian = document.getElementById("kembalian").value;
 
             if (!totalPembayaranValue) {
                 alert("Total pembayaran tidak boleh kosong.");
@@ -216,7 +221,6 @@
                 alert("Total pembayaran tidak boleh kurang dari total transaksi!");
                 return false;
             } else {
-                localStorage.setItem('pembayaran', totalPembayaranValue);
                 const myWindow = window.open(page, "_blank");
                 myWindow.focus();
                 myWindow.print();

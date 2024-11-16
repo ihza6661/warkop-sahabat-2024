@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,12 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
+            $id = Auth::id();
+            $activity = [
+                'id_user' => $id,
+                'aksi' => 'masuk'
+            ];
+            ActivityLog::create($activity);
             return redirect('/');
         }
 
@@ -27,6 +34,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'keluar'
+        ];
+        ActivityLog::create($activity);
+
         Auth::logout();
 
         $request->session()->invalidate();
@@ -101,6 +115,12 @@ class AuthController extends Controller
 
         $user->save();
 
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui profil'
+        ];
+        ActivityLog::create($activity);
         return redirect()->route('profil.index', $user->id)->with('success', 'Profil berhasil diupdate.');
     }
 }

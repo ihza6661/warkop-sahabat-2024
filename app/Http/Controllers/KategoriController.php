@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class KategoriController extends Controller
@@ -24,13 +26,12 @@ class KategoriController extends Controller
     {
         $validatedData = Validator::make($request->all(), [
             'nama' => 'required|string|max:255|unique:kategoris,nama',
-            'deskripsi' => 'required|string',
+            'deskripsi' => 'nullable|string',
         ], [
             'nama.required' => 'Nama wajib diisi.',
             'nama.string' => 'Nama harus berupa teks.',
             'nama.unique' => 'Nama sudah terdaftar, silakan pilih nama lain.',
 
-            'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
         ]);
 
@@ -42,6 +43,13 @@ class KategoriController extends Controller
         $kategori->nama = $request->nama;
         $kategori->deskripsi = $request->deskripsi;
         $kategori->save();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menambah kategori baru ' . $request->nama
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori baru berhasil ditambahkan.');
     }
@@ -59,13 +67,12 @@ class KategoriController extends Controller
 
         $validatedData = Validator::make($request->all(), [
             'nama' => 'required|string|max:255|unique:kategoris,nama,' . $kategori->id,
-            'deskripsi' => 'required|string',
+            'deskripsi' => 'nullable|string',
         ], [
             'nama.required' => 'Nama wajib diisi.',
             'nama.string' => 'Nama harus berupa teks.',
             'nama.unique' => 'Nama sudah terdaftar, silakan pilih nama lain.',
 
-            'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
         ]);
 
@@ -77,6 +84,13 @@ class KategoriController extends Controller
         $kategori->deskripsi = $request->deskripsi;
 
         $kategori->save();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'memperbarui data kategori ' . $request->nama
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('kategori.index')->with('success', 'Data Kategori berhasil diperbarui.');
     }
@@ -96,6 +110,13 @@ class KategoriController extends Controller
 
         $kategoriIdsToDelete = $request->input('kategoris');
         Kategori::whereIn('id', $kategoriIdsToDelete)->delete();
+
+        $id = Auth::id();
+        $activity = [
+            'id_user' => $id,
+            'aksi' => 'menghapus kategori'
+        ];
+        ActivityLog::create($activity);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori terpilih berhasil dihapus.');
     }

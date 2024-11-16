@@ -18,7 +18,8 @@
                             role="button" aria-expanded="false"><img class="rounded-circle"
                                 src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="user profile"></a>
                         <ul class="dropdown-menu" id="dropmenu" aria-labelledby="user-dropdown-toggle">
-                            <li><a class="dropdown-item" href="{{ route('profil.index', auth()->user()->id) }}">Profil</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('profil.index', auth()->user()->id) }}">Profil</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

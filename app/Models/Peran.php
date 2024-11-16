@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Peran extends Model
 {
     use HasFactory;
-    protected $fillables = [
+    protected $fillable = [
         'peran'
     ];
 

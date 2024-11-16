@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
+
 <head>
-    <title>
-        Transaksi
-    </title>
-    
+    <title>Warung Kopi Sahabat @yield('title')</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/images/logofood.ico"> 
-    
-    <!-- App CSS -->  
+    <link rel="shortcut icon" href="{{ asset('assets/images/logofood.ico') }}">
+
+    <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/portal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.2.1-web/css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/payment.css') }}">
-</head> 
+</head>
 
 <body>
-    <header>   
+    <header>
         @include('components.sidebar')
     </header>
     <div class="app-wrapper">

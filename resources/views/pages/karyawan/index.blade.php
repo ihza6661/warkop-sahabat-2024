@@ -1,5 +1,7 @@
 @extends('components.main')
-
+@section('title')
+    - Kelola Karyawan
+@endsection
 @section('container')
     <h1 class="app-page-title mb-2">Kelola Karyawan</h1>
     <section class="ftco-section">
