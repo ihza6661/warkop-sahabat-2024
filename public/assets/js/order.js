@@ -1,15 +1,13 @@
 const cart = {};
-const ppnRate = 0.1; // 10% PPN
 let selectedTable = null; // Variabel untuk menampung meja yang dipilih
 
-// Fungsi untuk mengupdate tampilan subtotal, total, dan ppn
+// Fungsi untuk mengupdate tampilan subtotal dan total
 function updateCartDisplay() {
     let subtotal = 0;
     for (const id in cart) {
         subtotal += cart[id].harga * cart[id].quantity;
     }
-    const ppn = subtotal * ppnRate;
-    const total = subtotal + ppn;
+    const total = subtotal;
 
     document.querySelector(
         ".sub-total"
