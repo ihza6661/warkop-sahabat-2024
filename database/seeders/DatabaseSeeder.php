@@ -8,6 +8,7 @@ use App\Models\Peran;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,8 +17,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Peran::factory(3)->create();
-        User::factory()->create();
+        Peran::factory(2)->create();
+        User::create([
+            'nama' => 'Kasir',
+            'username' => "kasir",
+            'password' => Hash::make('password'),
+            'foto_profil' => asset('kopi_tiam.jpg'),
+            'id_peran' => 2,
+        ]);
+        User::create([
+            'nama' => 'Admin',
+            'username' => "admin",
+            'password' => Hash::make('password'),
+            'foto_profil' => asset('kopi_tiam.jpg'),
+            'id_peran' => 1,
+        ]);
 
         // Menu::create([
         //     'nama' => 'Kopi Tiam',

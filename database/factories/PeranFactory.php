@@ -17,7 +17,7 @@ class PeranFactory extends Factory
     public function definition(): array
     {
         return [
-            'peran' => $this->faker->unique()->randomElement(['Manejer', 'Admin', 'Kasir']),
+            'peran' => $this->faker->unique()->randomElement(['Admin', 'Kasir']),
         ];
     }
 }
