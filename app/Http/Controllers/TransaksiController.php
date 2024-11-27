@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class TransaksiController extends Controller
@@ -97,6 +98,31 @@ class TransaksiController extends Controller
         ];
         ActivityLog::create($activity);
 
+        // Logika untuk mengirim notifikasi push
+        $contents = 'Transaksi baru '. ' telah ditambahkan oleh ' . Auth::user()->nama ;
+        $url = 'https://example.com'; // Ganti dengan URL yang relevan
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic os_v2_app_6fg3emk67bavbmgmnh3nhv3g4ehzupmtc3feg5ngkscuxz2t7d4fbuopf2v5dtqdeshspknqtrmoda4vt4tgnzy6dvj7tgc7megugwy',
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
+            ])->post('https://onesignal.com/api/v1/notifications', [
+                'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
+                'included_segments' => ['All'],
+                'contents' => ['en' => $contents],
+                'url' => $url
+            ]);
+
+            // Debugging response dari OneSignal
+            if ($response->failed()) {
+                throw new \Exception('Gagal mengirim notifikasi: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dibuat.');
     }
 
@@ -135,6 +161,32 @@ class TransaksiController extends Controller
             'aksi' => 'memperbarui transaksi'
         ];
         ActivityLog::create($activity);
+
+        // Logika untuk mengirim notifikasi push
+        $contents = 'Transaksi '. ' telah diperbarui oleh ' . Auth::user()->nama ;
+        $url = 'https://example.com'; // Ganti dengan URL yang relevan
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic os_v2_app_6fg3emk67bavbmgmnh3nhv3g4ehzupmtc3feg5ngkscuxz2t7d4fbuopf2v5dtqdeshspknqtrmoda4vt4tgnzy6dvj7tgc7megugwy',
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
+            ])->post('https://onesignal.com/api/v1/notifications', [
+                'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
+                'included_segments' => ['All'],
+                'contents' => ['en' => $contents],
+                'url' => $url
+            ]);
+
+            // Debugging response dari OneSignal
+            if ($response->failed()) {
+                throw new \Exception('Gagal mengirim notifikasi: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
