@@ -63,7 +63,7 @@ class KategoriController extends Controller
                 'content-type' => 'application/json',
             ])->post('https://onesignal.com/api/v1/notifications', [
                 'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
-                'include_player_ids' => $subscriptionIds,
+                'included_segments' => ['All'],
                 'contents' => ['en' => $contents],
                 'url' => $url
             ]);
