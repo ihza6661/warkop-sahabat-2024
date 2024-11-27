@@ -60,6 +60,17 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/password.js') }}"></script>
 
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "f14db231-5ef8-4150-b0cc-69f6d3d766e1",
+            });
+            console.log(OneSignal.User.PushSubscription.id);
+        });
+    </script>
+
 </body>
 
 </html>

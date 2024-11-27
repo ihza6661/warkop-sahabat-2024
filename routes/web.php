@@ -9,6 +9,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\LogAktivitasController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 Route::get('/masuk', function () {
     return view('pages.login');
@@ -60,5 +62,30 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/transaksi/update/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
     Route::get('/transaksi/nota/{id}', [TransaksiController::class, 'nota'])->name('transaksi.nota');
     Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('transaksi.laporan');
+
+    Route::get('/send-notif', function(Request $request) {
+        $contents = $request->query('contents');
+        $subscriptionIds = [$request->query('subscription_ids')];
+        $url = $request->query('url');
+
+        try{
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic os_v2_app_6fg3emk67bavbmgmnh3nhv3g4ehzupmtc3feg5ngkscuxz2t7d4fbuopf2v5dtqdeshspknqtrmoda4vt4tgnzy6dvj7tgc7megugwy',
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
+            ])->post('https://onesignal.com/api/v1/notifications', [
+                'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
+                'include_player_ids' => $subscriptionIds,
+                'contents' => ['en' => $contents],
+                'url' => $url
+            ]);
+
+            return $response->body();
+        }
+        catch(\Exception $e){
+            report($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    });
 
 });
