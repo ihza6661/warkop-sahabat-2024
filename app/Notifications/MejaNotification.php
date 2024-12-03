@@ -40,33 +40,39 @@ class MejaNotification extends Notification
     public function toMail($notifiable)
     {
         $mailMessage = new MailMessage();
+        $mejarUrl = url('/meja');
+
+
 
         // Notifikasi untuk Store
         if ($this->action === 'store') {
             $mailMessage->subject('Meja baru ditambahkan')
-                        ->greeting('Halo, Boss!')
-                        ->line('Meja berikut telah ditambahkan:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Meja berikut telah ditambahkan:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Meja', $mejarUrl);
         }
 
         // Notifikasi untuk Update
         if ($this->action === 'update') {
             $mailMessage->subject('Meja Diperbarui')
-                        ->greeting('Halo, Boss!')
-                        ->line('Meja berikut telah diperbarui:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Meja berikut telah diperbarui:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Meja', $mejarUrl);
         }
 
         // Notifikasi untuk Delete
         if ($this->action === 'destroy') {
             $deletedNames = implode(', ', $this->data);
             $mailMessage->subject('Meja Dihapus')
-                        ->greeting('Halo, Boss!')
-                        ->line('Meja berikut telah dihapus:')
-                        ->line($deletedNames)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Meja berikut telah dihapus:')
+                ->line($deletedNames)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Meja', $mejarUrl);
         }
 
         $mailMessage->line('Terima kasih telah menggunakan aplikasi kami!');

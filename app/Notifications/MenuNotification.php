@@ -40,38 +40,42 @@ class MenuNotification extends Notification
     public function toMail($notifiable)
     {
         $mailMessage = new MailMessage();
+        $menurUrl = url('/menu');
 
         // Notifikasi untuk Store
         if ($this->action === 'store') {
             $mailMessage->subject('Menu baru ditambahkan')
-                        ->greeting('Halo, Boss!')
-                        ->line('Menu berikut telah ditambahkan:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Harga Modal: ' . $this->data->harga_modal)
-                        ->line('Harga Jual: ' . $this->data->harga_jual)
-                        ->line('Kategori: ' . $this->data->kategori->nama)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Menu berikut telah ditambahkan:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Harga Modal: ' . $this->data->harga_modal)
+                ->line('Harga Jual: ' . $this->data->harga_jual)
+                ->line('Kategori: ' . $this->data->kategori->nama)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Menu', $menurUrl);
         }
 
         // Notifikasi untuk Update
         if ($this->action === 'update') {
             $mailMessage->subject('Menu Diperbarui')
-                        ->greeting('Halo, Boss!')
-                        ->line('Menu berikut telah diperbarui:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Harga Modal: ' . $this->data->harga_modal)
-                        ->line('Harga Jual: ' . $this->data->harga_jual)
-                        ->line('Kategori: ' . $this->data->kategori->nama)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Menu berikut telah diperbarui:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Harga Modal: ' . $this->data->harga_modal)
+                ->line('Harga Jual: ' . $this->data->harga_jual)
+                ->line('Kategori: ' . $this->data->kategori->nama)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Menu', $menurUrl);
         }
 
         // Notifikasi untuk Delete
         if ($this->action === 'destroy') {
             $mailMessage->subject('Menu Dihapus')
-                        ->greeting('Halo, Boss!')
-                        ->line('Menu berikut telah dihapus:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Menu berikut telah dihapus:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Menu', $menurUrl);
         }
 
         $mailMessage->line('Terima kasih telah menggunakan aplikasi kami!');

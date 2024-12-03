@@ -40,37 +40,41 @@ class UserNotification extends Notification
     public function toMail($notifiable)
     {
         $mailMessage = new MailMessage();
+        $userUrl = url('/karyawan');
 
         // Notifikasi untuk Store
         if ($this->action === 'store') {
             $mailMessage->subject('Karyawan baru ditambahkan')
-                        ->greeting('Halo, Boss!')
-                        ->line('Karyawan berikut telah ditambahkan:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Username: ' . $this->data->nama)
-                        ->line('Peran: ' . $this->data->peran->peran)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Karyawan berikut telah ditambahkan:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Username: ' . $this->data->nama)
+                ->line('Peran: ' . $this->data->peran->peran)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Karyawan', $userUrl);
         }
 
         // Notifikasi untuk Update
         if ($this->action === 'update') {
             $mailMessage->subject('Karyawan Diperbarui')
-                        ->greeting('Halo, Boss!')
-                        ->line('Karyawan berikut telah diperbarui:')
-                        ->line('Nama: ' . $this->data->nama)
-                        ->line('Username: ' . $this->data->nama)
-                        ->line('Peran: ' . $this->data->peran->peran)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Karyawan berikut telah diperbarui:')
+                ->line('Nama: ' . $this->data->nama)
+                ->line('Username: ' . $this->data->nama)
+                ->line('Peran: ' . $this->data->peran->peran)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Karyawan', $userUrl);
         }
 
         // Notifikasi untuk Delete
         if ($this->action === 'destroy') {
             $deletedNames = implode(', ', $this->data);
             $mailMessage->subject('Karyawan Dihapus')
-                        ->greeting('Halo, Boss!')
-                        ->line('Karyawan berikut telah dihapus:')
-                        ->line($deletedNames)
-                        ->line('Dibuat oleh: ' . Auth::user()->nama);
+                ->greeting('Halo, Boss!')
+                ->line('Karyawan berikut telah dihapus:')
+                ->line($deletedNames)
+                ->line('Dibuat oleh: ' . Auth::user()->nama)
+                ->action('Lihat Karyawan', $userUrl);
         }
 
         $mailMessage->line('Terima kasih telah menggunakan aplikasi kami!');
