@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
 use App\Models\Meja;
+use App\Notifications\MejaNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class MejaController extends Controller
@@ -41,37 +42,16 @@ class MejaController extends Controller
         $meja->nama = $request->nama;
         $meja->save();
 
+        // Kirim notifikasi store
+        $emailTujuan = 'wksahabatptk@gmail.com';
+        Notification::route('mail', $emailTujuan)->notify(new MejaNotification('store', $meja));
+
         $id = Auth::id();
         $activity = [
             'id_user' => $id,
             'aksi' => 'menambah meja baru'
         ];
         ActivityLog::create($activity);
-
-        // Logika untuk mengirim notifikasi push
-        $contents = 'Meja baru ' . $request->nama . ' telah ditambahkan';
-        $url = 'https://example.com'; // Ganti dengan URL yang relevan
-
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Basic os_v2_app_6fg3emk67bavbmgmnh3nhv3g4ehzupmtc3feg5ngkscuxz2t7d4fbuopf2v5dtqdeshspknqtrmoda4vt4tgnzy6dvj7tgc7megugwy',
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-            ])->post('https://onesignal.com/api/v1/notifications', [
-                'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
-                'included_segments' => ['All'],
-                'contents' => ['en' => $contents],
-                'url' => $url
-            ]);
-
-            // Debugging response dari OneSignal
-            if ($response->failed()) {
-                throw new \Exception('Gagal mengirim notifikasi: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            report($e);
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
 
         return redirect()->route('meja.index')->with('success', 'Meja baru berhasil ditambahkan.');
     }
@@ -102,37 +82,16 @@ class MejaController extends Controller
         $meja->nama = $request->nama;
         $meja->save();
 
+        // Kirim notifikasi update
+        $emailTujuan = 'wksahabatptk@gmail.com';
+        Notification::route('mail', $emailTujuan)->notify(new MejaNotification('update', $meja));
+
         $id = Auth::id();
         $activity = [
             'id_user' => $id,
             'aksi' => 'memperbarui data meja ' . $request->nama
         ];
         ActivityLog::create($activity);
-
-        // Logika untuk mengirim notifikasi push
-        $contents = 'Meja ' . $request->nama . ' telah ditambahkan';
-        $url = 'https://example.com'; // Ganti dengan URL yang relevan
-
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Basic os_v2_app_6fg3emk67bavbmgmnh3nhv3g4ehzupmtc3feg5ngkscuxz2t7d4fbuopf2v5dtqdeshspknqtrmoda4vt4tgnzy6dvj7tgc7megugwy',
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-            ])->post('https://onesignal.com/api/v1/notifications', [
-                'app_id' => 'f14db231-5ef8-4150-b0cc-69f6d3d766e1',
-                'included_segments' => ['All'],
-                'contents' => ['en' => $contents],
-                'url' => $url
-            ]);
-
-            // Debugging response dari OneSignal
-            if ($response->failed()) {
-                throw new \Exception('Gagal mengirim notifikasi: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            report($e);
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
 
         return redirect()->route('meja.index')->with('success', 'Data meja berhasil diperbarui.');
     }
@@ -151,7 +110,13 @@ class MejaController extends Controller
         }
 
         $mejaIdsToDelete = $request->input('mejas');
+        $mejaNames = Meja::whereIn('id', $mejaIdsToDelete)->pluck('nama')->toArray();
         Meja::whereIn('id', $mejaIdsToDelete)->delete();
+
+
+        // Kirim notifikasi destroy
+        $emailTujuan = 'wksahabatptk@gmail.com';
+        Notification::route('mail', $emailTujuan)->notify(new MejaNotification('destroy', $mejaNames));
 
         $id = Auth::id();
         $activity = [
